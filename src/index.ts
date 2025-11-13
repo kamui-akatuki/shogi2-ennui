@@ -2,6 +2,9 @@ import { Event, FileRequest, GameData, ModBase, MoveEvent, Player, Request, Requ
 import fs from "fs";
 
 export class Ennui extends ModBase{
+  constructor(){
+    super();
+  }
   onStart(_data: GameData, _before: GameData, _event: StartEvent, _sender: Player, _updater: RequestUpdater): { r: RequestExpansion[]; e: Event[]; } {
     const request=new FileRequest("both","coexistence","effect1",fs.readFileSync("src/assets/effect1.png").toString("base64"),"image/png");
     return {r:[{request}],e:[]};
