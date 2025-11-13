@@ -1,7 +1,7 @@
 import { Event, FileRequest, GameData, ModBase, MoveEvent, Player, Request, RequestExpansion, RequestUpdater, SquareRequest, StartEvent } from "shogi2-types";
 import fs from "fs";
 
-export class Ennui extends ModBase{
+export default class Ennui extends ModBase{
   constructor(){
     super();
   }
