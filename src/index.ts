@@ -1,12 +1,13 @@
 import { Event, FileRequest, GameData, ModBase, MoveEvent, Player, Request, RequestExpansion, RequestUpdater, SquareRequest, StartEvent } from "shogi2-types";
 import fs from "fs";
+import path from "path";
 
 export default class Ennui extends ModBase{
   constructor(){
     super();
   }
   onStart(_data: GameData, _before: GameData, _event: StartEvent, _sender: Player, _updater: RequestUpdater): { r: RequestExpansion[]; e: Event[]; } {
-    const request=new FileRequest("both","coexistence","effect1",fs.readFileSync("src/assets/effect1.png").toString("base64"),"image/png");
+    const request=new FileRequest("both","coexistence","effect1",fs.readFileSync(path.join(__dirname,"./assets/effect1.png")).toString("base64"),"image/png");
     return {r:[{request}],e:[]};
   }
   onMove(d: GameData, _before: GameData, event: MoveEvent, _sender: Player, _updater: RequestUpdater): { r: RequestExpansion[]; e: Event[]; } {
