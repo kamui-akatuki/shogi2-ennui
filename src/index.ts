@@ -1,4 +1,4 @@
-import { Event, FileRequest, GameData, ModBase, MoveEvent, Player, Request, RequestExpansion, RequestUpdater, SquareRequest, StartEvent } from "shogi2-types";
+import { Diff, Event, FileRequest, GameData, ModBase, MoveEvent, Player, RequestExpansion, RequestUpdater, SquareRequest, StartEvent } from "shogi2-types";
 import fs from "fs";
 
 export default class Ennui extends ModBase{
@@ -15,19 +15,20 @@ export default class Ennui extends ModBase{
     );
     return {r:[{request}],e:[]};
   }
-  onMove(d: GameData, _before: GameData, event: MoveEvent, _sender: Player, _updater: RequestUpdater): { r: RequestExpansion[]; e: Event[]; } {
-    const data={...d};
+  onMove(_d: GameData, before: GameData, event: MoveEvent, _sender: Player, _updater: RequestUpdater): { r: RequestExpansion[]; e: Event[]; } {
+    const data={...before};
     const {x,y}=event.to;
-    const requests:Request[]=[];
-    data.board.squares=data.board.squares.map((square)=>{
-      if (square.position.x===x && square.position.y===y){
-        const s={...square,image:"effect1"};
-        const request=new SquareRequest("both","coexistence",s);
-        requests.push(request);
-        return s;
-      }
-      return square;
+    const index=data.board.squares.findIndex((square)=>{
+      return square.position.x===x && square.position.y===y;
     });
-    return {r:requests.map((r)=>({request:r,data})),e:[]};
+    const diff:Diff={
+      keys:["board","squares",index,"image"],
+      type:"update",
+      value:"effect1"
+    };
+    const square=data.board.squares[index];
+    square.image="effect1";
+    const request=new SquareRequest("both","obedience",square);
+    return {r:[{request,diff}],e:[]};
   }
 };
